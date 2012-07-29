@@ -42,9 +42,21 @@ Yii::app()->clientScript->registerScript('bind', '
     <div class="row">
     <?php
     
+    $models = Estoque::model()->findAll();
+    $itens = array();
+    foreach($models as $model)
+    {
+        $itens[] = array(
+            'label'   =>"#$model->id | $model->descricao | $model->codigo | Quantidade: $model->quantidade",
+            'value'   =>$model->descricao,
+            'id'      =>$model->id,
+            'codigo'  =>$model->codigo
+        );
+    }
+    
     $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
             'name'=>'itens',
-            'source'=>$this->createUrl("Eventos/itens"),
+            'source'=>$itens,
             'htmlOptions'=>array(
                 'size'=>'35px'
             ),
