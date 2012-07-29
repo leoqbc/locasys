@@ -31,7 +31,7 @@ class EventosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'itens'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -50,8 +50,10 @@ class EventosController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $id_evento = $id;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        $id_evento,
 		));
 	}
 
@@ -163,6 +165,25 @@ class EventosController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+        
+        //Falta implementa a busca do REQUEST ($_GET['term'])
+        public function actionItens()
+        {
+            $models = Estoque::model()->findAll();
+            $itens = array();
+            foreach($models as $model)
+            {
+                $itens[] = array(
+                    'label'   =>"#$model->id | $model->descricao | $model->codigo | Quantidade: $model->quantidade",
+                    'value'   =>$model->descricao,
+                    'id'      =>$model->id,
+                    'codigo'  =>$model->codigo
+                );
+            }
+            
+            echo CJSON::encode($itens);
+            Yii::app()->end();
+        }
 
 	/**
 	 * Performs the AJAX validation.
