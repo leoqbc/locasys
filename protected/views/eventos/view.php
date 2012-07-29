@@ -14,7 +14,7 @@ $this->menu=array(
 
 Yii::app()->clientScript->registerScript('bind', '
     $( "#itens" ).bind( "autocompleteselect", function(event, ui) {
-        alert(ui.item.codigo);
+        alert(ui.item.value);
     });
 ');
 
@@ -60,6 +60,10 @@ Yii::app()->clientScript->registerScript('bind', '
             'htmlOptions'=>array(
                 'size'=>'35px'
             ),
+            'options'=>array(
+                'showAnim'=>'fold',
+                'minLength'=>'2',
+            )
     ));
     ?>  
     </div>
