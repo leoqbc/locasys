@@ -28,8 +28,10 @@
 
 <div class="container" id="page">
 	<div id="topnav">
-		<div class="topnav_text"><a href='#'>Home</a> | <a href='#'>Meus Dados</a> | <a href='#'>Opções</a> | <?php echo CHtml::link('Deslogar('.Yii::app()->user->name.')',array('site/logout')); ?></div>
-	</div>
+                <?php if(!Yii::app()->user->isGuest): ?>
+                    <div class="topnav_text"><a href='#'>Home</a> | <a href='#'>Meus Dados</a> | <a href='#'>Opções</a> | <?php echo CHtml::link('Deslogar('.Yii::app()->user->name.')',array('site/logout')); ?></div>
+                <?php endif; ?>
+        </div>
 	<div id="header">
 		<div id="logo"><img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/emplogo.gif"></img></div>
 	</div><!-- header -->
