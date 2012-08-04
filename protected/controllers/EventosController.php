@@ -31,7 +31,7 @@ class EventosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'itens'),
+				'actions'=>array('create','update', 'itens', 'incluiitens'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -166,7 +166,8 @@ class EventosController extends Controller
 		return $model;
 	}
         
-        //Falta implementa a busca do REQUEST ($_GET['term'])
+        // Falta implementar a busca do REQUEST ($_GET['term'])
+        // Colocar filtro no Model!!!
         public function actionItens()
         {
             $models = Estoque::model()->findAll();
@@ -182,6 +183,18 @@ class EventosController extends Controller
             }
             
             echo CJSON::encode($itens);
+            Yii::app()->end();
+        }
+        
+        // Action para inclusão de itens de saída
+        // Inclui os itens via Ajax!
+        public function actionIncluiItens()
+        {
+            
+            echo '<script type="text/javascript">';
+            echo "";
+            echo '</script>';
+            //echo CHtml::encode(print_r($_POST, true));
             Yii::app()->end();
         }
 

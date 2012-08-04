@@ -14,7 +14,7 @@ $this->menu=array(
 
 Yii::app()->clientScript->registerScript('bind', '
     $( "#itens" ).bind( "autocompleteselect", function(event, ui) {
-        alert(ui.item.value);
+        $("#iditem").attr("value", ui.item.id);
     });
 ');
 
@@ -38,7 +38,7 @@ Yii::app()->clientScript->registerScript('bind', '
 )); ?>
 <br />
 <h1>Itens de saída do evento</h1>
-<div class="form">
+<?php echo CHtml::beginForm(); ?>
     <div class="row">
     <?php
     
@@ -65,10 +65,19 @@ Yii::app()->clientScript->registerScript('bind', '
                 'minLength'=>'2',
             )
     ));
+    
+    echo CHtml::ajaxSubmitButton(
+            "+ Adicionar Item",
+            array('incluiItens'),
+            array(
+                'update' => '#estoque',
+            )
+    );
+    echo CHtml::hiddenField("iditem");
     ?>  
     </div>
-</div>
+<?php echo CHtml::endForm(); ?>
     <?php $this->beginWidget('zii.widgets.CPortlet', array(
 	'title'=>'Itens de saída do evento',)); ?>
-    Nenhum item no momento
+    <div id="estoque">Nenhum item no momento</div>
     <?php $this->endWidget(); ?>
