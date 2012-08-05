@@ -8,6 +8,8 @@ class EventosController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+        public $id_evento;
+        
 	/**
 	 * @return array action filters
 	 */
@@ -31,12 +33,20 @@ class EventosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'itens', 'incluiitens'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions'=>array(
+                                    'admin',
+                                    'delete', 
+                                    'itens', 
+                                    'incluiitens', 
+                                    'saidas',
+                                    'atuasaida',
+                                    'excluisaida',
+                                 ),
+				'users'=>array('adm', 'tumadjian'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -50,10 +60,9 @@ class EventosController extends Controller
 	 */
 	public function actionView($id)
 	{
-                $id_evento = $id;
+                $this->id_evento = $id;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
-                        $id_evento,
 		));
 	}
 
@@ -186,18 +195,67 @@ class EventosController extends Controller
             Yii::app()->end();
         }
         
-        // Action para inclusão de itens de saída
-        // Inclui os itens via Ajax!
+        /** Action para inclusão de itens de saída
+         *  Inclui os itens via Ajax!
+         */
         public function actionIncluiItens()
         {
-            
-            echo '<script type="text/javascript">';
-            echo "";
-            echo '</script>';
+            if(isset($_POST['id_item']) && isset($_POST['id_evento']))
+            {
+                // Falta validar se o item já existe!!!
+                // ATENÇÃO!!
+                $saida = new Saida;
+                $saida->id_item_estoque = $_POST['id_item'];
+                $saida->id_evento = $_POST['id_evento'];
+                if ($saida->save())
+                {
+                    echo '<script type="text/javascript">';
+                    echo "alert('Item {$_POST['itens']} incluido com sucesso!')";
+                    echo '</script>';
+                    $this->renderPartial('_saidas',array(
+                        'id_evento' => $_POST['id_evento']
+                    ));
+                }else
+                {
+                    throw new CHttpException(404,'Erro ao inserir o item no banco');
+                }
+            }
             //echo CHtml::encode(print_r($_POST, true));
             Yii::app()->end();
         }
-
+        
+        /**
+	 * Exclui item da tabela saída
+	 * Área para exclusão via Ajax
+	 */
+        public function actionExcluiSaida($id)
+        {
+            //Saida::model()->deleteByPk($id);
+        }
+        
+        /**
+	 * Altera na tabela saída as quantidades
+	 * Área para retirada via Ajax
+	 */
+        public function actionAtuaSaida()
+        {
+            print_r($_POST);
+        }
+        
+        /**
+	 * Action de saída
+	 * Criado pra mostrar saídas em uma página única
+	 */
+        public function actionSaidas($id)
+        {
+            $id_evento = $id;
+            $this->render("_saidas", 
+                    array(
+                        "id_evento" => $id_evento
+                    )
+                );
+        }
+        
 	/**
 	 * Performs the AJAX validation.
 	 * @param CModel the model to be validated

@@ -13,14 +13,18 @@ $this->menu=array(
 );
 
 Yii::app()->clientScript->registerScript('bind', '
+    $("#incItem").attr("disabled", "disabled");
+    
     $( "#itens" ).bind( "autocompleteselect", function(event, ui) {
-        $("#iditem").attr("value", ui.item.id);
+        $("#incItem").removeAttr("disabled");
+        $("#id_item").attr("value", ui.item.id);
     });
+
 ');
 
 ?>
 
-<h1>Dados do Evento: <span style="color: #000066; text-decoration: underline"><?php echo $model->nome_evento; ?></h1>
+<h1>Dados do Evento:</h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -41,43 +45,67 @@ Yii::app()->clientScript->registerScript('bind', '
 <?php echo CHtml::beginForm(); ?>
     <div class="row">
     <?php
-    
-    $models = Estoque::model()->findAll();
+    $modelEst = Estoque::model()->findAll();
     $itens = array();
-    foreach($models as $model)
+    foreach($modelEst as $model1)
     {
         $itens[] = array(
-            'label'   =>"#$model->id | $model->descricao | $model->codigo | Quantidade: $model->quantidade",
-            'value'   =>$model->descricao,
-            'id'      =>$model->id,
-            'codigo'  =>$model->codigo
+            'label'   =>"#$model1->id | $model1->descricao | $model1->codigo | Quantidade: $model1->quantidade",
+            'value'   =>$model1->descricao,
+            'id'      =>$model1->id,
+            'codigo'  =>$model1->codigo
         );
     }
     
+    echo CHtml::label("Digite o nome do item para incluir na lista: ", "itens");
+    echo "<br />";
     $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
             'name'=>'itens',
             'source'=>$itens,
             'htmlOptions'=>array(
-                'size'=>'35px'
+                'size'=>'50'
             ),
             'options'=>array(
                 'showAnim'=>'fold',
                 'minLength'=>'2',
             )
     ));
-    
+    echo "&nbsp;";
     echo CHtml::ajaxSubmitButton(
             "+ Adicionar Item",
             array('incluiItens'),
             array(
+                'complete'=>'js:function(){ 
+                    $("#itens").attr("value", "");
+                    $("#id_item").attr("value", "");
+                    $("#incItem").attr("disabled", "disabled");
+
+//                    $.fn.yiiGridView.update("saida-grid", {
+//                        data: $(this).serialize()
+//                    });  
+                }',
                 'update' => '#estoque',
+            ),
+            array(
+                'class' => 'botao',
+                'id'    => 'incItem',
             )
     );
-    echo CHtml::hiddenField("iditem");
-    ?>  
+    echo CHtml::hiddenField("id_item");
+    echo CHtml::hiddenField("id_evento", $model->id);
+    ?>
     </div>
 <?php echo CHtml::endForm(); ?>
+    <br />
     <?php $this->beginWidget('zii.widgets.CPortlet', array(
-	'title'=>'Itens de saída do evento',)); ?>
-    <div id="estoque">Nenhum item no momento</div>
+	'title'=>'Lista de Itens',)); ?>
+    <div id="dados"></div>
+    <div id="estoque">
+        <?php
+            $this->renderPartial('_saidas',array(
+                        'id_evento' => $model->id
+            ));
+        ?>
+    </div>
+    
     <?php $this->endWidget(); ?>
