@@ -13,6 +13,7 @@ $dataProvider->setPagination(
 
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'saida-grid',
+    'selectableRows' => 999,
     'dataProvider' => $dataProvider,
     'columns' => array(
         'id',
@@ -24,7 +25,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'type' => 'raw',
             'name' => 'qtd_saida_item',
-            'value' => 'CHtml::textField($data->id_item_estoque, $data->qtd_saida_item,array("size"=>"5"))',
+            'value' => 'CHtml::textField($data->id, $data->qtd_saida_item,array("size"=>"5"))',
             //'htmlOptions' => array('width' => '50')
         ),
         array(
