@@ -230,7 +230,10 @@ class EventosController extends Controller
 	 */
         public function actionExcluiSaida($id)
         {
-            //Saida::model()->deleteByPk($id);
+            echo "<script>
+                    window.history.back();
+                  </script>";
+            Saida::model()->deleteByPk($id);
         }
         
         /**
