@@ -49,6 +49,7 @@ class EventosController extends Controller
 				'users'=>array('adm', 'tumadjian'),
 			),
 			array('deny',  // deny all users
+                                'actions'=>array('index'),
 				'users'=>array('*'),
 			),
 		);
@@ -209,15 +210,12 @@ class EventosController extends Controller
                 $saida->id_evento = $_POST['id_evento'];
                 if ($saida->save())
                 {
-                    echo '<script type="text/javascript">';
-                    echo "alert('Item {$_POST['itens']} incluido com sucesso!')";
-                    echo '</script>';
                     $this->renderPartial('_saidas',array(
                         'id_evento' => $_POST['id_evento']
                     ));
                 }else
                 {
-                    throw new CHttpException(404,'Erro ao inserir o item no banco');
+                    throw new CHttpException(404,'Erro ao inserir o item no banco!');
                 }
             }
             //echo CHtml::encode(print_r($_POST, true));
@@ -229,11 +227,15 @@ class EventosController extends Controller
 	 * Área para exclusão via Ajax
 	 */
         public function actionExcluiSaida($id)
-        {
-            echo "<script>
-                    window.history.back();
-                  </script>";
-            Saida::model()->deleteByPk($id);
+        {   
+            if(Saida::model()->deleteByPk($id))
+            {
+                $this->renderPartial('_saidas',array(
+                        'id_evento' => $_POST['id_evento']
+                ));
+            } else {
+                throw new CHttpException(404,'Erro ao excluir o item!');
+            }
         }
         
         /**

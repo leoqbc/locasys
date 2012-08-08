@@ -13,7 +13,7 @@ $dataProvider->setPagination(
 
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'saida-grid',
-    'selectableRows' => 999,
+//    'selectableRows' => 999,
     'dataProvider' => $dataProvider,
     'columns' => array(
         'id',
@@ -36,7 +36,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'type' => 'raw',
             'value' => 'CHtml::link(
                 "Excluir", 
-                "excluisaida/$data->id"
+                "javascript:void(0)",//"excluisaida/$data->id",
+                array("onclick" => "javascript:ajaxDelSaidas($data->id, $data->id_evento)")
             );',
             'htmlOptions' => array('width' => '40')
         ),

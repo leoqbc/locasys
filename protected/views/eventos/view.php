@@ -12,6 +12,25 @@ $this->menu=array(
 	array('label'=>'Manage Eventos', 'url'=>array('admin')),
 );
 
+Yii::app()->clientScript->registerScript('ajaxdelete', '
+    function ajaxDelSaidas(id, evento) {
+        $.ajax({
+            url: "excluisaida/"+id,
+            type: "POST",
+            data: { id_evento : evento },
+            beforeSend: function () {
+                perg = confirm("Deseja mesmo excluir este item?");
+                if (!perg) {
+                    return false;
+                }
+            },
+            success: function (data) {
+                $("#estoque").html(data);
+            }
+            });
+    }
+', CClientScript::POS_HEAD);
+
 Yii::app()->clientScript->registerScript('bind', '
     $("#incItem").attr("disabled", "disabled");
     
@@ -98,7 +117,7 @@ Yii::app()->clientScript->registerScript('bind', '
 <?php echo CHtml::endForm(); ?>
     <br />
     <?php $this->beginWidget('zii.widgets.CPortlet', array(
-	'title'=>'Lista de Itens',)); ?>
+	'title'=>'Lista de Itens de Saída',)); ?>
     <div id="dados"></div>
     <div id="estoque">
         <?php
