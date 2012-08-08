@@ -4,11 +4,14 @@ class UsersController extends Controller
 {
     
         public function __construct($id){
-            if(Yii::app()->user->permissao != 1)
-            {
-                throw new CHttpException(403,'Você não tem permissão para acessar essa página.');
-            }  
-            parent::__construct($id);
+            if (isset(Yii::app()->user->permissao)){
+                if (Yii::app()->user->permissao != 1) {
+                    throw new CHttpException(403,'Você não tem permissão para acessar essa página.');
+                }
+            } else {
+                    throw new CHttpException(403, 'Você não tem permissão para acessa essa página');
+            }
+                parent::__construct($id);
         }
     
 	/**
