@@ -210,9 +210,7 @@ class EventosController extends Controller
                 $saida->id_evento = $_POST['id_evento'];
                 if ($saida->save())
                 {
-                    $this->renderPartial('_saidas',array(
-                        'id_evento' => $_POST['id_evento']
-                    ));
+                    // Log de inclusão de saida aqui
                 }else
                 {
                     throw new CHttpException(404,'Erro ao inserir o item no banco!');
@@ -230,9 +228,7 @@ class EventosController extends Controller
         {   
             if(Saida::model()->deleteByPk($id))
             {
-                $this->renderPartial('_saidas',array(
-                        'id_evento' => $_POST['id_evento']
-                ));
+                //Log de exclusão aqui
             } else {
                 throw new CHttpException(404,'Erro ao excluir o item!');
             }
