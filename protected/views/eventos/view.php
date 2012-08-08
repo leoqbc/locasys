@@ -5,11 +5,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Eventos', 'url'=>array('index')),
-	array('label'=>'Create Eventos', 'url'=>array('create')),
-	array('label'=>'Update Eventos', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Eventos', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Eventos', 'url'=>array('admin')),
+	array('label'=>'Lista de Eventos', 'url'=>array('index')),
+	array('label'=>'Criar Evento', 'url'=>array('create')),
+	array('label'=>'Alterar Evento', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Deletar Evento', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 );
 
 Yii::app()->clientScript->registerScript('ajaxdelete', '
@@ -24,8 +23,10 @@ Yii::app()->clientScript->registerScript('ajaxdelete', '
                     return false;
                 }
             },
-            success: function (data) {
-                $("#estoque").html(data);
+            success: function (dados) {
+                $.fn.yiiGridView.update("saida-grid", {
+                    data: $(this).serialize()
+                });
             }
             });
     }
@@ -97,13 +98,13 @@ Yii::app()->clientScript->registerScript('bind', '
                 'complete'=>'js:function(){ 
                     $("#itens").attr("value", "");
                     $("#id_item").attr("value", "");
-                    $("#incItem").attr("disabled", "disabled");
-
-//                    $.fn.yiiGridView.update("saida-grid", {
-//                        data: $(this).serialize()
-//                    });  
+                    $("#incItem").attr("disabled", "disabled");  
                 }',
-                'update' => '#estoque',
+                'success' => 'js:function(){
+                    $.fn.yiiGridView.update("saida-grid", {
+                        data: $(this).serialize()
+                    });
+                }',
             ),
             array(
                 'class' => 'botao',
