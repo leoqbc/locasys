@@ -8,7 +8,7 @@ $this->menu=array(
 	array('label'=>'Lista de Eventos', 'url'=>array('index')),
 	array('label'=>'Criar Evento', 'url'=>array('create')),
 	array('label'=>'Alterar Evento', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Deletar Evento', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Deletar Evento', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Você tem certeza que deseja deletar este evento?')),
 );
 
 Yii::app()->clientScript->registerScript('ajaxdelete', '
