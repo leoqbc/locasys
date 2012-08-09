@@ -232,6 +232,7 @@ class EventosController extends Controller
             } else {
                 throw new CHttpException(404,'Erro ao excluir o item!');
             }
+            Yii::app()->end();
         }
         
         /**
@@ -240,7 +241,20 @@ class EventosController extends Controller
 	 */
         public function actionAtuaSaida()
         {
-            print_r($_POST);
+            //print_r($_POST);
+            if (isset($_POST["Saida"])) {
+                $res = null;
+                foreach ($_POST["Saida"] as $id => $val) {
+                    $res = $this->alteraQtdSaida ($id, $val);
+                }
+                if ($res) {
+                    echo "
+                        <script>
+                            alert('Itens alterados com sucesso!');
+                        </script>
+                    ";
+                }
+            }
         }
         
         /**
@@ -269,4 +283,23 @@ class EventosController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        // Function para alterar o valor de uma ROW do Model Saida
+        // Ela está sendo usada no Método actionAtuaSaida()
+        protected function alteraQtdSaida ($id, $qtd) 
+        {
+            $model = Saida::model()->findByPk($id);
+            $model->qtd_saida_item = $qtd;
+            if (!$model->save())
+            {
+                $erros = $model->getErrors('qtd_saida_item');
+                foreach ($erros as $erro) {
+                    echo '<br /><span style="color: red">' . $model->idItemEstoque->descricao . " - Erro:  $erro</span>"; 
+                }
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
 }

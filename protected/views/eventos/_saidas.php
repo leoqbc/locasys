@@ -11,6 +11,8 @@ $dataProvider->setPagination(
     )
 );
 
+echo CHtml::errorSummary($itSaida);
+
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'saida-grid',
 //    'selectableRows' => 999,
@@ -25,7 +27,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'type' => 'raw',
             'name' => 'qtd_saida_item',
-            'value' => 'CHtml::textField($data->id, $data->qtd_saida_item,array("size"=>"5"))',
+            'value' => 'CHtml::textField("Saida[$data->id]", $data->qtd_saida_item,array("size"=>"5"))',
             //'htmlOptions' => array('width' => '50')
         ),
         array(

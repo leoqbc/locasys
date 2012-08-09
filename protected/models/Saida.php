@@ -42,6 +42,7 @@ class Saida extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('qtd_saida_item', 'numerical', 'integerOnly'=>true),
+                        array('qtd_saida_item', 'validaQtd'),
 			array('id_item_estoque', 'length', 'max'=>20),
 			array('id_evento', 'length', 'max'=>10),
 			// The following rule is used by search().
@@ -96,4 +97,13 @@ class Saida extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        //Rule para verificar se o número é negativo
+        public function validaQtd($attribute, $item)
+        {
+            if($this->$attribute < 0){
+                $this->addError($attribute, 'Quantidade não pode ser menor que 0');
+            }
+        }
+        
 }
