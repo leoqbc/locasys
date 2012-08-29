@@ -42,8 +42,8 @@ class Saida extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('qtd_saida_item', 'numerical', 'integerOnly'=>true),
-                        array('qtd_saida_item', 'validaQtd'),
-			array('id_item_estoque', 'length', 'max'=>20),
+                        array('qtd_saida_item', 'validaQtd', 'on'=>'update'),
+			array('id_item_estoque', 'length', 'max'=>20, 'unique'),
 			array('id_evento', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -98,11 +98,21 @@ class Saida extends CActiveRecord
 		));
 	}
         
-        //Rule para verificar se o número é negativo
+        // Rule para verificar se o número é negativo
         public function validaQtd($attribute, $item)
         {
-            if($this->$attribute < 0){
+            if($this->$attribute <= 0) {
                 $this->addError($attribute, 'Quantidade não pode ser menor que 0');
+            }
+            
+            // Pega a quantidade em estoque do item
+            $qtd_estoque = $this->idItemEstoque->quantidade;
+        
+            // Validando qtd em estoque
+            // Não PODE ser MAIOR que o que tem no estoque
+            if ($this->$attribute > $qtd_estoque) {
+                $this->addError($attribute, 'Quantidade de (' .$this->$attribute. ') 
+                                não pode ser maior do estoque (' . $qtd_estoque . ')');
             }
         }
         

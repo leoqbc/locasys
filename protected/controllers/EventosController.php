@@ -243,17 +243,26 @@ class EventosController extends Controller
         {
             //print_r($_POST);
             if (isset($_POST["Saida"])) {
-                $res = null;
+                $res = array();
+                $err = false;
                 foreach ($_POST["Saida"] as $id => $val) {
-                    $res = $this->alteraQtdSaida ($id, $val);
+                     if(!$this->alteraQtdSaida ($id, $val)) {
+                         $err = true;
+                     }
                 }
-                if ($res) {
-                    echo "
-                        <script>
-                            alert('Itens alterados com sucesso!');
-                        </script>
-                    ";
+                
+                if($err) {
+                     echo '
+                        <script type="text/javascript">
+                            alert("Nem todos os dados foram gravados com sucesso, verifique os erros");
+                        </script>';
+                } else {
+                     echo '
+                        <script type="text/javascript">
+                            alert("Dados foram gravados com sucessos !");
+                        </script>';
                 }
+                
             }
         }
         
