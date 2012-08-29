@@ -211,9 +211,16 @@ class EventosController extends Controller
                 if ($saida->save())
                 {
                     // Log de inclusão de saida aqui
+                    echo "teste";
                 }else
                 {
-                    throw new CHttpException(404,'Erro ao inserir o item no banco!');
+                    $errs = count($saida->getError());
+                    if($errs) {
+                        echo '
+                        <script type="text/javascript">
+                            alert("Ocorreu um erro na inclusão");
+                        </script>';
+                    }
                 }
             }
             //echo CHtml::encode(print_r($_POST, true));

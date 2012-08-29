@@ -43,7 +43,8 @@ class Saida extends CActiveRecord
 		return array(
 			array('qtd_saida_item', 'numerical', 'integerOnly'=>true),
                         array('qtd_saida_item', 'validaQtd', 'on'=>'update'),
-			array('id_item_estoque', 'length', 'max'=>20, 'unique'),
+			array('id_item_estoque', 'length', 'max'=>20),
+                        array('id_item_estoque', 'unique', 'on'=>'insert'),
 			array('id_evento', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
