@@ -42,7 +42,7 @@ class Estoque extends CActiveRecord
 			array('id_categoria, quantidade', 'numerical', 'integerOnly'=>true),
 			array('descricao', 'length', 'max'=>150),
 			array('codigo', 'length', 'max'=>50),
-                        array('quantidade', 'validaQtd'),
+                        array('quantidade', 'validaQtd', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, descricao, id_categoria, codigo, quantidade', 'safe', 'on'=>'search'),
