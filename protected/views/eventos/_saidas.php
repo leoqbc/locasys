@@ -53,7 +53,7 @@ echo CHtml::ajaxSubmitButton(
         'Salvar Quantidades', 
         array('atuasaida'),
         array(
-            'update' => '#teste',
+            'update' => '#erros',
         ),
         array(
             'class' => 'botao',
@@ -76,4 +76,4 @@ echo CHtml::ajaxSubmitButton(
 echo CHtml::hiddenField('id_evento', $id_evento);
 echo CHtml::endForm();
 ?>
-<div id="teste"></div>
+<div id="erros"></div>
