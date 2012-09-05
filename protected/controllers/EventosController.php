@@ -45,6 +45,7 @@ class EventosController extends Controller
                                     'saidas',
                                     'atuasaida',
                                     'excluisaida',
+                                    'atuaestoque'
                                  ),
 				'users'=>array('adm', 'tumadjian'),
 			),
@@ -250,7 +251,6 @@ class EventosController extends Controller
         {
             //print_r($_POST);
             if (isset($_POST["Saida"])) {
-                $res = array();
                 $err = false;
                 foreach ($_POST["Saida"] as $id => $val) {
                      if(!$this->alteraQtdSaida ($id, $val)) {
@@ -316,6 +316,10 @@ class EventosController extends Controller
             } else {
                 return true;
             }
+        }
+        
+        public function actionAtuaEstoque(){
+            print_r($_POST);
         }
         
 }

@@ -66,8 +66,10 @@ echo "&nbsp;";
 // ================================================
 echo CHtml::ajaxSubmitButton(
         'Baixar do Estoque', 
-        array('incluiItens'),
-        "",
+        array('AtuaEstoque'),
+        array(
+            'update' => '#erros',
+        ),
         array(
             'class' => 'botao',
             'id'    => 'bxStoque',
