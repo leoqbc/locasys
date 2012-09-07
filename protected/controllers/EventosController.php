@@ -319,7 +319,10 @@ class EventosController extends Controller
         }
         
         public function actionAtuaEstoque(){
-            print_r($_POST);
+            $group = new Group();
+            
+            $group->incluiModel('Estoque', 10, "descricao");
+            
         }
         
 }
