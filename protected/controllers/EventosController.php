@@ -32,10 +32,6 @@ class EventosController extends Controller
 				'actions'=>array('index','view'),
 				'users'=>array('@'),
 			),
-			array('deny', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(
                                     'admin',
@@ -48,6 +44,16 @@ class EventosController extends Controller
                                     'atuaestoque'
                                  ),
 				'users'=>array('admin', 'tumadjian'),
+			),
+                        array('deny', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array(
+                                    'create',   
+                                    'update', 
+                                    'delete', 
+                                    'atuasaida', 
+                                    'excluisaida'
+                                ),
+				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
                                 'actions'=>array('index'),
