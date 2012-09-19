@@ -13,7 +13,7 @@ return array(
         'charset'=>'UTF-8',
         'theme'=>'shadow_dancer',
 	// preloading 'log' component
-	'preload'=>array('log'),
+	//'preload'=>array('log'),
 
 	// autoloading model and component classes
 	'import'=>array(
