@@ -1,12 +1,8 @@
 <?php
 
-class Group extends CModel {
+class Group {
     
     private $models = array();
-    
-    public function attributeNames() {
-        return array('models', 'required');
-    }
     
     public function addInList(CActiveRecord $obj){
         $this->models[] = $obj;
@@ -20,7 +16,6 @@ class Group extends CModel {
     
     public function __get($name) {
         return $this->$name;
-        //parent::__get($name);
     }
     
 }
