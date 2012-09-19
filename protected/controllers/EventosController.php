@@ -32,7 +32,7 @@ class EventosController extends Controller
 				'actions'=>array('index','view'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+			array('deny', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
@@ -47,7 +47,7 @@ class EventosController extends Controller
                                     'excluisaida',
                                     'atuaestoque'
                                  ),
-				'users'=>array('adm', 'tumadjian'),
+				'users'=>array('admin', 'tumadjian'),
 			),
 			array('deny',  // deny all users
                                 'actions'=>array('index'),
@@ -204,8 +204,6 @@ class EventosController extends Controller
         {
             if(isset($_POST['id_item']) && isset($_POST['id_evento']))
             {
-                // Falta validar se o item já existe!!!
-                // ATENÇÃO!!
                 $saida = new Saida;
                 $saida->id_item_estoque = $_POST['id_item'];
                 $saida->id_evento = $_POST['id_evento'];
