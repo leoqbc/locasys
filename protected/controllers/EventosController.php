@@ -35,7 +35,9 @@ class EventosController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(
                                     'admin',
-                                    'delete', 
+                                    'delete',
+                                    'create',
+                                    'update',   
                                     'itens', 
                                     'incluiitens', 
                                     'saidas',
