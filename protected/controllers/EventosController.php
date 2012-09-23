@@ -218,7 +218,9 @@ class EventosController extends Controller
                 if ($saida->save())
                 {
                     // Log de inclusão de saida aqui
-                    echo "teste";
+                    $evento = Eventos::model()->findByPk($_POST["id_evento"]);
+                    $evento->pronto_saida=0;
+                    $evento->save();
                 }else
                 {
                     $errs = count($saida->getError());
@@ -265,14 +267,25 @@ class EventosController extends Controller
                 }
                 
                 if($err) {
+                     // Caso der erro significa que a saida ainda está pronta
+                     // para baixar o estoque
+                     $evento = Eventos::model()->findByPk($_POST["id_evento"]);
+                     $evento->pronto_saida=0;
+                     $evento->save();
                      echo '
                         <script type="text/javascript">
                             alert("Nem todos os dados foram gravados com sucesso, verifique os erros");
                         </script>';
                 } else {
+                     // Mudando campos pronto_saida
+                     // e avisando que a saida esta pronta para 
+                     // retirar do estoque
+                     $evento = Eventos::model()->findByPk($_POST["id_evento"]);
+                     $evento->pronto_saida=1;
+                     $evento->save();
                      echo '
                         <script type="text/javascript">
-                            alert("Dados foram gravados com sucessos !");
+                            alert("Dados foram gravados com sucessos! \n\nVocê já pode baixar os itens do estoque!");
                         </script>';
                 }
                 
@@ -324,11 +337,52 @@ class EventosController extends Controller
             }
         }
         
-        public function actionAtuaEstoque(){
-            $group = new Group();
+        public function actionAtuaEstoque()
+        {
+            $evento = Eventos::model()->findByPk($_POST["id_evento"]);
+            // Para a função caso já foi retirado do estoque
+            if ($evento->fechado == true) {
+                echo '<br />
+                        <span style="color: red">
+                            Esse evento já baixou do estoque, retorne os itens
+                            ao estoque para voltar a edita-lo.
+                        <span>';
+                return;
+            }
+                
             
-            $group->incluiModel('Estoque', 10, "descricao");
-            
+            if (!$evento->pronto_saida) {
+                 echo '<br />
+                        <span style="color: red">
+                            Seus itens não estão prontos para baixar no estoque<br \>
+                            Verifique as quantidades!
+                        <span>';
+            } else {
+                foreach($_POST["Saida"] as $idsaida => $qtd){
+                    try {
+                        $this->baixaEstoque($idsaida, $qtd);
+                    } catch (CHttpException $e) {
+                        echo "<script>alert('{$e->getMessage()}');</script>";
+                    }
+                }
+                $evento->fechado = 1;
+                $evento->save();
+                echo '<script>
+                        $.fn.yiiGridView.update("saida-grid", {
+                            data: $(this).serialize()
+                        });
+                    </script>';
+            }
+        }
+        
+        protected function baixaEstoque($idsaida, $qtd)
+        {
+            $saida = Saida::model()->findByPk($idsaida);
+            $estoque = Estoque::model()->findByPk($saida->id_item_estoque);
+            $estoque->quantidade -= $qtd;
+            if (!$estoque->save()) {
+                throw new CHttpException(500, "Um erro aconteceu ao alterar o item ( $estoque->descricao ) do estoque, contate seu desenvolvedor");
+            }
         }
         
 }
