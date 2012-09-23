@@ -73,7 +73,7 @@ class Saida extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'id_item_estoque' => 'Itens de Saída',
-			'qtd_saida_item' => 'Quantidade',
+			'qtd_saida_item' => 'Qtd Saída',
 			'id_evento' => 'Evento',
 		);
 	}
