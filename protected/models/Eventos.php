@@ -10,6 +10,11 @@
  * @property string $data_fim
  * @property string $responsavel
  * @property integer $fechado
+ * @property integer $ativo
+ * @property integer $pronto_saida
+ *
+ * The followings are the available model relations:
+ * @property Saida[] $saidas
  */
 class Eventos extends CActiveRecord
 {
@@ -45,7 +50,7 @@ class Eventos extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('nome_evento, data_inicio, data_fim, responsavel, fechado', 'required'),
-			array('fechado', 'numerical', 'integerOnly'=>true),
+			array('fechado, ativo, pronto_saida', 'numerical', 'integerOnly'=>true),
 			array('nome_evento', 'length', 'max'=>100),
 			array('responsavel', 'length', 'max'=>50),
 			// The following rule is used by search().
@@ -62,6 +67,7 @@ class Eventos extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'saidas' => array(self::HAS_MANY, 'Saida', 'id_evento'),
 		);
 	}
 
@@ -77,6 +83,8 @@ class Eventos extends CActiveRecord
 			'data_fim' => 'Data de Finalização',
 			'responsavel' => 'Responsável',
 			'fechado' => 'Fechado',
+                        'ativo' => 'Ativo',
+			'pronto_saida' => 'Pronto para Saida',
 		);
 	}
 
