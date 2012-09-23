@@ -103,7 +103,7 @@ class Saida extends CActiveRecord
         public function validaQtd($attribute, $item)
         {
             if($this->$attribute <= 0) {
-                $this->addError($attribute, 'Quantidade não pode ser menor que 0');
+                $this->addError($attribute, 'Quantidade não pode ser menor ou igual a 0');
             }
             
             // Pega a quantidade em estoque do item
