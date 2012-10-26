@@ -205,11 +205,29 @@ class EventosController extends Controller
             Yii::app()->end();
         }
         
+        /** 
+         * Verifica se o evento foi fechado
+         */
+        private function eventoFechado($id_evento)
+        {
+            $evento = Eventos::model()->findByPk($id_evento);
+            
+            // Não deixar excluir itens de evento fechado
+            // não coloquei no model, pois não é regra pra todos
+            if($evento->fechado)
+            {
+                Yii::app()->end();
+            }
+        }
+        
         /** Action para inclusão de itens de saída
          *  Inclui os itens via Ajax!
          */
         public function actionIncluiItens()
         {
+            // Se tiver fechado para AQUI!
+            $this->eventoFechado($_POST["id_evento"]);
+            
             if(isset($_POST['id_item']) && isset($_POST['id_evento']))
             {
                 $saida = new Saida;
@@ -241,7 +259,10 @@ class EventosController extends Controller
 	 * Área para exclusão via Ajax
 	 */
         public function actionExcluiSaida($id)
-        {   
+        {
+            // Se tiver fechado para AQUI!
+            $this->eventoFechado($_POST["id_evento"]);
+            
             if(Saida::model()->deleteByPk($id))
             {
                 //Log de exclusão aqui
@@ -257,7 +278,9 @@ class EventosController extends Controller
 	 */
         public function actionAtuaSaida()
         {
-            //print_r($_POST);
+            // Se tiver fechado para AQUI!
+            $this->eventoFechado($_POST["id_evento"]);
+            
             if (isset($_POST["Saida"])) {
                 $err = false;
                 foreach ($_POST["Saida"] as $id => $val) {

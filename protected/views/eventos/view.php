@@ -118,7 +118,15 @@ Yii::app()->clientScript->registerScript('bind', '
 <?php echo CHtml::endForm(); ?>
     <br />
     <?php $this->beginWidget('zii.widgets.CPortlet', array(
-	'title'=>'Lista de Itens de Saída',)); ?>
+	'title'=>'Lista de Itens de Saída',)); 
+    
+    if ($model->fechado): ?>
+    <div class="flash-notice">
+        <b>Atenção:</b> 
+        Os produtos já foram retirados do estoque, para editar é preciso retornar os itens.     
+    </div>
+    <?php endif; ?>
+    
     <div id="dados"></div>
     <div id="estoque">
         <?php
