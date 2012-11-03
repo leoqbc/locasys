@@ -47,7 +47,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ));
 
 // ================================================
-// Implementar esse Ajax para salvar as quantidades
+// Ajax para salvar as quantidades
 // ================================================
 echo CHtml::ajaxSubmitButton(
         'Salvar Quantidades', 
@@ -62,7 +62,7 @@ echo CHtml::ajaxSubmitButton(
     );
 echo "&nbsp;";
 // ================================================
-// Implementar esse Ajax para retirar do estoque
+// Ajax para retirar do estoque
 // ================================================
 echo CHtml::ajaxSubmitButton(
         'Baixar do Estoque', 
@@ -73,6 +73,21 @@ echo CHtml::ajaxSubmitButton(
         array(
             'class' => 'botao',
             'id'    => 'bxStoque',
+        )
+    );
+echo "&nbsp;";
+// ================================================
+// Ajax para retornar ao estoque
+// ================================================
+echo CHtml::ajaxSubmitButton(
+        'Retornar ao Estoque', 
+        array('retornaEstoque'),
+        array(
+            'update' => '#erros',
+        ),
+        array(
+            'class' => 'botao',
+            'id'    => 'rtStoque',
         )
     );
 echo CHtml::hiddenField('id_evento', $id_evento);
