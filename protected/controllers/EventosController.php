@@ -45,7 +45,7 @@ class EventosController extends Controller
                                     'excluisaida',
                                     'atuaestoque'
                                  ),
-				'users'=>array('admin', 'tumadjian'),
+				'users'=>array('adm', 'tumadjian'),
 			),
                         array('deny', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array(
@@ -216,6 +216,10 @@ class EventosController extends Controller
             // não coloquei no model, pois não é regra pra todos
             if($evento->fechado)
             {
+                echo '
+                        <script type="text/javascript">
+                            alert("Evento já foi fechado, não é possivel alterar");
+                        </script>';
                 Yii::app()->end();
             }
         }
@@ -391,6 +395,7 @@ class EventosController extends Controller
                 $evento->fechado = 1;
                 $evento->save();
                 echo '<script>
+                        alert("Itens retirados do estoque!");
                         $.fn.yiiGridView.update("saida-grid", {
                             data: $(this).serialize()
                         });
