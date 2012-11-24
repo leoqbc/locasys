@@ -393,36 +393,20 @@ class EventosController extends Controller
                             Verifique as quantidades!
                         <span>';
             } else {
-                foreach($_POST["Saida"] as $idsaida => $qtd){
-                    try {
-                        $this->baixaEstoque($idsaida, $qtd);
-                    } catch (CHttpException $e) {
-                        echo "<script>alert('{$e->getMessage()}');</script>";
-                    }
-                }
-                $evento->fechado = 1;
-                $evento->save();
+                Estoque::model()->retiraEstoque($_POST['id_evento']);
                 echo '<script>
-                        alert("Itens retirados do estoque!");
-                        $.fn.yiiGridView.update("saida-grid", {
-                            data: $(this).serialize()
-                        });
+                        alert("Itens retirados do estoque");
+                        window.location.reload();
                     </script>';
-            }
-        }
-        
-        protected function baixaEstoque($idsaida, $qtd)
-        {
-            $saida = Saida::model()->findByPk($idsaida);
-            $estoque = Estoque::model()->findByPk($saida->id_item_estoque);
-            $estoque->quantidade -= $qtd;
-            if (!$estoque->save()) {
-                throw new CHttpException(500, "Um erro aconteceu ao alterar o item ( $estoque->descricao ) do estoque, contate seu desenvolvedor");
             }
         }
         
         public function actionRetornaEstoque(){
             Estoque::model()->retornaEstoque($_POST['id_evento']);
+            echo '<script>
+                    alert("Itens retornados ao estoque");
+                    window.location.reload();
+                  </script>';
         }
         
 }

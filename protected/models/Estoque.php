@@ -96,8 +96,27 @@ class Estoque extends CActiveRecord
 		));
 	}
         
+        // Retira os items do Estoque
+        // só precisa informar o id do evento
+        public function retiraEstoque($id_evento)
+        {
+            $evento = Eventos::model()->findByPk($id_evento);
+            if(!$evento->fechado){
+                $saidas = Saida::model()->findAll('id_evento=:id', array(':id'=>$id_evento));
+                foreach($saidas as $saida){
+                    $saida->idItemEstoque->quantidade -= $saida->qtd_saida_item;
+                    if(!$saida->idItemEstoque->save())
+                    {
+                        throw new CHttpException(500, "Um erro aconteceu ao alterar o item ( {$saida->idItemEstoque->descricao} ) do estoque, contate seu desenvolvedor");
+                    }
+                }
+                $evento->fechado = 1;
+                $evento->save();
+            }
+        }
+        
         // Retorna os items da Saida ao Estoque
-        // só precisa informar o id fo evento
+        // só precisa informar o id do evento
         public function retornaEstoque($id_evento)
         {
             $evento = Eventos::model()->findByPk($id_evento);
@@ -105,7 +124,10 @@ class Estoque extends CActiveRecord
                 $saidas = Saida::model()->findAll('id_evento=:id', array(':id'=>$id_evento));
                 foreach($saidas as $saida){
                     $saida->idItemEstoque->quantidade += $saida->qtd_saida_item;
-                    $saida->idItemEstoque->save();
+                    if(!$saida->idItemEstoque->save())
+                    {
+                        throw new CHttpException(500, "Um erro aconteceu ao alterar o item ( {$saida->idItemEstoque->descricao} ) do estoque, contate seu desenvolvedor");
+                    }
                 }
                 $evento->fechado = 0;
                 $evento->save();
