@@ -44,7 +44,11 @@ class Saida extends CActiveRecord
 			array('qtd_saida_item', 'numerical', 'integerOnly'=>true),
                         array('qtd_saida_item', 'validaQtd', 'on'=>'update'),
 			array('id_item_estoque', 'length', 'max'=>20),
-                        array('id_item_estoque', 'unique', 'on'=>'insert'),
+                    
+                        // Tem que mudar essa validação abaixo, erro na lógica
+                        // não deixa colocar mesmo item em outros eventos
+                        //array('id_item_estoque', 'unique', 'on'=>'insert'),
+                    
 			array('id_evento', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

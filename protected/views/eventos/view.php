@@ -95,12 +95,13 @@ Yii::app()->clientScript->registerScript('bind', '
             "+ Adicionar Item",
             array('incluiItens'),
             array(
-                'complete'=>'js:function(){ 
+                'complete'=>'function(){ 
                     $("#itens").attr("value", "");
                     $("#id_item").attr("value", "");
                     $("#incItem").attr("disabled", "disabled");  
                 }',
-                'success' => 'js:function(){
+                'success' => 'function(res){
+                    $("#erros").append(res);
                     $.fn.yiiGridView.update("saida-grid", {
                         data: $(this).serialize()
                     });

@@ -245,12 +245,20 @@ class EventosController extends Controller
                     $evento->save();
                 }else
                 {
-                    $errs = count($saida->getError());
-                    if($errs) {
+                    //$errs = count($saida->getErrors());
+                    $erros = $saida->getErrors();
+                    if($erros) {
                         echo '
                         <script type="text/javascript">
                             alert("Ocorreu um erro na inclusão");
                         </script>';
+                        echo "<span style='color: red'>";
+                        foreach($erros as $erro){
+                            foreach($erro as $msg){
+                                echo $msg . "<br />";
+                            }
+                        }
+                        echo "</span>";
                     }
                 }
             }
