@@ -421,4 +421,8 @@ class EventosController extends Controller
             }
         }
         
+        public function actionRetornaEstoque(){
+            Estoque::model()->retornaEstoque($_POST['id_evento']);
+        }
+        
 }

@@ -96,6 +96,22 @@ class Estoque extends CActiveRecord
 		));
 	}
         
+        // Retorna os items da Saida ao Estoque
+        // só precisa informar o id fo evento
+        public function retornaEstoque($id_evento)
+        {
+            $evento = Eventos::model()->findByPk($id_evento);
+            if($evento->fechado){
+                $saidas = Saida::model()->findAll('id_evento=:id', array(':id'=>$id_evento));
+                foreach($saidas as $saida){
+                    $saida->idItemEstoque->quantidade += $saida->qtd_saida_item;
+                    $saida->idItemEstoque->save();
+                }
+                $evento->fechado = 0;
+                $evento->save();
+            }
+        }
+        
         //Filtro para usar em Rules verifica se o número é negativo
         public function validaQtd()
         {

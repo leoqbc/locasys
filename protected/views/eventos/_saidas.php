@@ -81,7 +81,7 @@ echo "&nbsp;";
 // ================================================
 echo CHtml::ajaxSubmitButton(
         'Retornar ao Estoque', 
-        array('retornaEstoque'),
+        array('RetornaEstoque'),
         array(
             'update' => '#erros',
         ),
