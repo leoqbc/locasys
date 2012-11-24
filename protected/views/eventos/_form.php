@@ -32,13 +32,7 @@
 		<?php echo $form->textField($model,'responsavel',array('size'=>50,'maxlength'=>50)); ?>
 		<?php echo $form->error($model,'responsavel'); ?>
 	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'fechado'); ?>
-		<?php echo $form->textField($model,'fechado'); ?>
-		<?php echo $form->error($model,'fechado'); ?>
-	</div>
-
+        
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

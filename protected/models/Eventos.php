@@ -51,6 +51,7 @@ class Eventos extends CActiveRecord
 		return array(
 			array('nome_evento, data_inicio, data_fim, responsavel, fechado', 'required'),
 			array('fechado, ativo, pronto_saida', 'numerical', 'integerOnly'=>true),
+                        array('fechado', 'setFechado', 'on'=>'insert'),
 			array('nome_evento', 'length', 'max'=>100),
 			array('responsavel', 'length', 'max'=>50),
 			// The following rule is used by search().
@@ -110,6 +111,11 @@ class Eventos extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function setFechado()
+        {
+            $this->fechado = 0;
+        }
         
         public function defaultScope()
         {
